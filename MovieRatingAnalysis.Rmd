@@ -1,0 +1,48 @@
+---
+title: "MovieRatingAnalysisUsingR"
+output: pdf_document
+---
+
+```{r}
+install.packages("ggplot2")
+install.packages("ggthemes")
+install.packages("scales")
+install.packages("dplyr")
+install.packages("lessR")
+```
+
+```{r}
+movies = do.call(rbind,strsplit(readLines('movies.dat'),'::',fixed=T))
+movies <- as.data.frame(movies)
+colnames(movies) <- c("ID","Title","Genre")
+movies$ID <- as.numeric(movies$ID)
+head(movies)
+```
+```{r}
+ratings = read.delim("ratings.dat", header= FALSE ,sep = ':', colClasses = c(NA, "NULL"))
+colnames(ratings) <- c("User","ID","Ratings","Timestamp")
+head(ratings)
+```
+
+```{r}
+data = merge(movies,ratings,by = "ID")
+data = data[with(data, order(ID)),]
+head(data)
+```
+
+```{r}
+library(dplyr) 
+library(ggplot2)
+ratings<- dplyr::count(data, Ratings, sort = TRUE) %>%
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+ggplot(ratings, aes(x = "", y = perc, fill = factor(Ratings)),alpha = 0.8) +
+  geom_col() +
+  geom_text(aes(label = labels),
+            position = position_stack(vjust = 0.5)) +
+  coord_polar(theta = "y")
+
+```
+
