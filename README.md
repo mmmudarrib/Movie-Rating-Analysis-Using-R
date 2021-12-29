@@ -1,0 +1,2 @@
+# Movie-Rating-Analysis-Using-R
+We all watch movies for entertainment, some of us never rate it, while some viewers always rate every movie they watch. This type of viewer helps in rating movies for people who go through the movie reviews before watching any movie to make sure they are about to watch a good movie. So, if you are new to data science and want to learn how to analyze movie ratings using the Python programming language, this article is for you. In this article, I will walk you through the task of Movie Rating Analysis using R.
